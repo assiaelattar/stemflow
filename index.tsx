@@ -18,10 +18,7 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+  public state: ErrorBoundaryState = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
@@ -36,8 +33,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       return (
         <div style={{ padding: '20px', color: 'white', backgroundColor: '#111', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
           <h1 style={{fontSize: '24px', marginBottom: '10px', color: '#ef4444'}}>Something went wrong</h1>
-          <p style={{color: '#888', maxWidth: '500px'}}>{this.state.error?.message}</p>
-          <button onClick={() => window.location.reload()} style={{marginTop: '20px', padding: '10px 20px', background: '#333', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer'}}>
+          <p style={{color: '#888', maxWidth: '500px', marginBottom: '20px'}}>{this.state.error?.message}</p>
+          <button onClick={() => window.location.reload()} style={{padding: '10px 20px', background: '#333', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer'}}>
             Reload Application
           </button>
         </div>

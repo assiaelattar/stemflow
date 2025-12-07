@@ -1,0 +1,7 @@
+{
+  "name": "RestoFlow SaaS",
+  "description": "A comprehensive SaaS platform for restaurant management including POS, interactive client menu, kitchen display system, and table booking.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

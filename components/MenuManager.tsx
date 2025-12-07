@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MenuItem } from '../types';
 import { generateMenuDescription } from '../services/geminiService';
 import { MASTER_LIBRARY } from '../services/mockDb';
-import { Sparkles, Plus, Edit, Trash, Image as ImageIcon, X, Languages, Download, Check, Search, PackageOpen } from 'lucide-react';
+import { Sparkles, Plus, Edit, Trash, Image as ImageIcon, X, Languages, Download, Check, Search } from 'lucide-react';
 
 interface MenuManagerProps {
   menu: MenuItem[];
@@ -104,33 +104,6 @@ export const MenuManager: React.FC<MenuManagerProps> = ({ menu, onAdd, onUpdate 
             </button>
         </div>
       </div>
-
-      {/* Empty State Prompt */}
-      {menu.length === 0 && !isEditing && !isLibraryOpen && (
-        <div className="bg-[#1f1f1f] rounded-3xl border-2 border-dashed border-neutral-800 p-12 flex flex-col items-center justify-center text-center animate-in fade-in zoom-in-95 duration-500">
-            <div className="bg-red-500/10 p-6 rounded-full mb-6 text-red-500">
-               <PackageOpen size={64} />
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-2">Your Menu is Empty</h3>
-            <p className="text-neutral-400 max-w-md mb-8">
-              Get started quickly by importing items from our premium Master Library, or add your own items manually.
-            </p>
-            <div className="flex gap-4">
-                <button 
-                  onClick={() => setIsLibraryOpen(true)}
-                  className="px-8 py-4 bg-red-500 text-white rounded-2xl font-bold hover:bg-red-600 transition shadow-lg shadow-red-500/20 flex items-center gap-2"
-                >
-                  <Download size={20} /> Open Library
-                </button>
-                <button 
-                  onClick={() => { setIsEditing(true); setCurrentItem({}); }}
-                  className="px-8 py-4 bg-[#2d2d2d] text-white rounded-2xl font-bold hover:bg-[#3d3d3d] transition border border-neutral-700"
-                >
-                  Add Manually
-                </button>
-            </div>
-        </div>
-      )}
 
       {/* Library Modal */}
       {isLibraryOpen && (
@@ -381,44 +354,42 @@ export const MenuManager: React.FC<MenuManagerProps> = ({ menu, onAdd, onUpdate 
         </div>
       )}
 
-      {menu.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {menu.map(item => (
-            <div key={item.id} className="bg-[#1f1f1f] border border-neutral-800 rounded-3xl overflow-hidden flex flex-col group hover:border-red-500/50 transition duration-300 shadow-sm">
-              <div className="h-48 bg-[#2d2d2d] relative overflow-hidden">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                {!item.available && (
-                  <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-white font-bold backdrop-blur-sm">
-                    SOLD OUT
-                  </div>
-                )}
-                <div className="absolute top-3 right-3">
-                  <button
-                    onClick={() => { setCurrentItem(item); setIsEditing(true); }}
-                    className="bg-black/50 hover:bg-red-500 p-2 rounded-full text-white backdrop-blur-md transition"
-                  >
-                    <Edit size={16} />
-                  </button>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {menu.map(item => (
+          <div key={item.id} className="bg-[#1f1f1f] border border-neutral-800 rounded-3xl overflow-hidden flex flex-col group hover:border-red-500/50 transition duration-300 shadow-sm">
+            <div className="h-48 bg-[#2d2d2d] relative overflow-hidden">
+              <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              {!item.available && (
+                <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-white font-bold backdrop-blur-sm">
+                  SOLD OUT
                 </div>
+              )}
+              <div className="absolute top-3 right-3">
+                 <button
+                  onClick={() => { setCurrentItem(item); setIsEditing(true); }}
+                  className="bg-black/50 hover:bg-red-500 p-2 rounded-full text-white backdrop-blur-md transition"
+                >
+                  <Edit size={16} />
+                </button>
               </div>
-              <div className="p-5 flex-1 flex flex-col">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-bold text-lg text-white">{item.name}</h3>
-                  <span className="font-bold text-red-500">{item.price.toFixed(2)} MAD</span>
-                </div>
-                <p className="text-neutral-500 text-sm mb-4 flex-1 line-clamp-2">{item.description}</p>
-                <div className="flex justify-between items-center mt-auto">
-                  <span className="text-xs bg-[#2d2d2d] px-3 py-1 rounded-lg text-neutral-400 font-medium uppercase tracking-wider">{item.category}</span>
-                  <div className="flex gap-1">
-                    {item.nameFr && <span className="text-[10px] bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded">FR</span>}
-                    {item.nameAr && <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded">AR</span>}
-                  </div>
+            </div>
+            <div className="p-5 flex-1 flex flex-col">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="font-bold text-lg text-white">{item.name}</h3>
+                <span className="font-bold text-red-500">{item.price.toFixed(2)} MAD</span>
+              </div>
+              <p className="text-neutral-500 text-sm mb-4 flex-1 line-clamp-2">{item.description}</p>
+              <div className="flex justify-between items-center mt-auto">
+                <span className="text-xs bg-[#2d2d2d] px-3 py-1 rounded-lg text-neutral-400 font-medium uppercase tracking-wider">{item.category}</span>
+                <div className="flex gap-1">
+                   {item.nameFr && <span className="text-[10px] bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded">FR</span>}
+                   {item.nameAr && <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded">AR</span>}
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
